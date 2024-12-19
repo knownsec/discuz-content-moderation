@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+    <item id="Title"><![CDATA[Discuz! Plugin]]></item>
+    <item id="Version"><![CDATA[X3.5]]></item>
+    <item id="Time"><![CDATA[2024-11-26 11:17]]></item>
+    <item id="From"><![CDATA[Discuz! Board]]></item>
+    <item id="Data">
+        <item id="plugin">
+            <item id="available"><![CDATA[1]]></item>
+            <item id="adminid"><![CDATA[1]]></item>
+            <item id="name"><![CDATA[知道创宇内容安全检测]]></item>
+            <item id="identifier"><![CDATA[content_moderation]]></item>
+            <item id="description"><![CDATA[对用户发帖/回帖时所提交的文本内容使用知道创宇接口进行检测，多种处理方式选择，从而节省审核人力，释放业务风险]]></item>
+            <item id="datatables"><![CDATA[]]></item>
+            <item id="directory"><![CDATA[content_moderation/]]></item>
+            <item id="copyright"><![CDATA[知道创宇]]></item>
+            <item id="version"><![CDATA[1.0.0]]></item>
+            <item id="__modules">
+                <item id="0">
+                    <item id="name"><![CDATA[content_moderation]]></item>
+                    <item id="param"><![CDATA[]]></item>
+                    <item id="menu"><![CDATA[]]></item>
+                    <item id="url"><![CDATA[]]></item>
+                    <item id="type"><![CDATA[11]]></item>
+                    <item id="adminid"><![CDATA[0]]></item>
+                    <item id="displayorder"><![CDATA[0]]></item>
+                    <item id="navtitle"><![CDATA[]]></item>
+                    <item id="navicon"><![CDATA[]]></item>
+                    <item id="navsubname"><![CDATA[]]></item>
+                    <item id="navsuburl"><![CDATA[]]></item>
+                </item>
+                <item id="1">
+                    <item id="name"><![CDATA[setting]]></item>
+                    <item id="param"><![CDATA[]]></item>
+                    <item id="menu"><![CDATA[设置]]></item>
+                    <item id="url"><![CDATA[]]></item>
+                    <item id="type"><![CDATA[3]]></item>
+                    <item id="adminid"><![CDATA[0]]></item>
+                    <item id="displayorder"><![CDATA[0]]></item>
+                    <item id="navtitle"><![CDATA[]]></item>
+                    <item id="navicon"><![CDATA[]]></item>
+                    <item id="navsubname"><![CDATA[]]></item>
+                    <item id="navsuburl"><![CDATA[]]></item>
+                </item>
+                <item id="2">
+                    <item id="name"><![CDATA[audit_content]]></item>
+                    <item id="param"><![CDATA[]]></item>
+                    <item id="menu"><![CDATA[违规待审核]]></item>
+                    <item id="url"><![CDATA[]]></item>
+                    <item id="type"><![CDATA[3]]></item>
+                    <item id="adminid"><![CDATA[0]]></item>
+                    <item id="displayorder"><![CDATA[0]]></item>
+                    <item id="navtitle"><![CDATA[]]></item>
+                    <item id="navicon"><![CDATA[]]></item>
+                    <item id="navsubname"><![CDATA[]]></item>
+                    <item id="navsuburl"><![CDATA[]]></item>
+                </item>
+                <item id="3">
+                    <item id="name"><![CDATA[all_content]]></item>
+                    <item id="param"><![CDATA[]]></item>
+                    <item id="menu"><![CDATA[全部检测内容]]></item>
+                    <item id="url"><![CDATA[]]></item>
+                    <item id="type"><![CDATA[3]]></item>
+                    <item id="adminid"><![CDATA[0]]></item>
+                    <item id="displayorder"><![CDATA[0]]></item>
+                    <item id="navtitle"><![CDATA[]]></item>
+                    <item id="navicon"><![CDATA[]]></item>
+                    <item id="navsubname"><![CDATA[]]></item>
+                    <item id="navsuburl"><![CDATA[]]></item>
+                </item>
+            </item>
+        </item>
+        <item id="version"><![CDATA[X3.5]]></item>
+        <item id="language">
+            <item id="scriptlang">
+                <item id="save"><![CDATA[保存]]></item>
+                <item id="setting"><![CDATA[参数设置]]></item>
+                <item id="audit_type"><![CDATA[审核类型]]></item>
+                <item id="audit_type_post"><![CDATA[发帖]]></item>
+                <item id="audit_type_reply"><![CDATA[回帖]]></item>
+                <item id="intercept_type"><![CDATA[审核分类]]></item>
+                <item id="handle_method"><![CDATA[处理措施]]></item>
+                <item id="normal"><![CDATA[正常]]></item>
+                <item id="politics"><![CDATA[涉政]]></item>
+                <item id="porn"><![CDATA[色情/性感]]></item>
+                <item id="illegal"><![CDATA[违法违规/暴恐]]></item>
+                <item id="ad"><![CDATA[广告]]></item>
+                <item id="custom"><![CDATA[自定义]]></item>
+                <item id="knownsec_moderation_record"><![CDATA[所有记录]]></item>
+                <item id="start_date"><![CDATA[开始日期]]></item>
+                <item id="end_date"><![CDATA[截止日期]]></item>
+                <item id="check_module"><![CDATA[检测模块]]></item>
+                <item id="audit_status"><![CDATA[审核状态]]></item>
+                <item id="evil_label"><![CDATA[违规类型]]></item>
+                <item id="intercept_status"><![CDATA[拦截状态]]></item>
+                <item id="page_size"><![CDATA[每页大小]]></item>
+                <item id="search"><![CDATA[搜索]]></item>
+                <item id="table_head">
+                    <item id="0"><![CDATA[是否免审]]></item>
+                    <item id="1"><![CDATA[审核状态]]></item>
+                    <item id="2"><![CDATA[检测内容]]></item>
+                    <item id="3"><![CDATA[类型]]></item>
+                    <item id="4"><![CDATA[发布人/时间]]></item>
+                    <item id="5"><![CDATA[分类]]></item>
+                    <item id="6"><![CDATA[审核人/时间]]></item>
+                </item>
+                <item id="knownsec_evil_label">
+                    <item id="all"><![CDATA[全部]]></item>
+                    <item id="Normal"><![CDATA[正常]]></item>
+                    <item id="Polity"><![CDATA[涉政]]></item>
+                    <item id="Porn"><![CDATA[色情/性感]]></item>
+                    <item id="Illegal"><![CDATA[违法违规/暴恐]]></item>
+                    <item id="Ad"><![CDATA[广告]]></item>
+                    <item id="Custom"><![CDATA[自定义]]></item>
+                </item>
+                <item id="knownsec_check_module">
+                    <item id="0"><![CDATA[全部]]></item>
+                    <item id="1"><![CDATA[发帖]]></item>
+                    <item id="2"><![CDATA[回帖]]></item>
+                </item>
+                <item id="knownsec_audit_status">
+                    <item id="0"><![CDATA[全部]]></item>
+                    <item id="1"><![CDATA[待审核]]></item>
+                    <item id="2"><![CDATA[审核成功]]></item>
+                    <item id="3"><![CDATA[审核失败]]></item>
+                    <item id="4"><![CDATA[无需审核]]></item>
+                </item>
+            </item>
+            <item id="templatelang">
+                <item id="setting"><![CDATA[参数设置]]></item>
+                <item id="yes"><![CDATA[是]]></item>
+                <item id="no"><![CDATA[否]]></item>
+                <item id="visit"><![CDATA[访问]]></item>
+                <item id="secret_key_desc"><![CDATA[获取SecretId和SecretKey或通过"新建密钥"创建密钥串]]></item>
+                <item id="secret_manage"><![CDATA[密钥管理]]></item>
+                <item id="app_manage"><![CDATA[应用管理]]></item>
+                <item id="save"><![CDATA[保存]]></item>
+                <item id="system_error"><![CDATA[帖子内容中含有非法字符。或系统内部错误，请联系管理员解决]]></item>
+                <item id="unknown_error"><![CDATA[发生未知错误，请联系管理员解决]]></item>
+                <item id="post_examine"><![CDATA[发帖检测:]]></item>
+                <item id="post_examine_desc"><![CDATA[发贴时，检测帖子的标题和帖子的文本内容]]></item>
+                <item id="reply_examine"><![CDATA[回帖检测:]]></item>
+                <item id="reply_examine_desc"><![CDATA[回贴时，检测回帖的文本内容]]></item>
+                <item id="need_intercept"><![CDATA[拦截敏感词类型:]]></item>
+                <item id="need_intercept_desc"><![CDATA[需要拦截的敏感词类型，如敏感词在白名单中，则不会拦截]]></item>
+                <item id="docs_center"><![CDATA[文档中心]]></item>
+                <item id="support"><![CDATA[意见反馈]]></item>
+                <item id="audit_type"><![CDATA[审核类型]]></item>
+                <item id="audit_type_post"><![CDATA[发帖]]></item>
+                <item id="audit_type_reply"><![CDATA[回帖]]></item>
+                <item id="intercept_type"><![CDATA[审核分类]]></item>
+                <item id="handle_method"><![CDATA[处理措施]]></item>
+            </item>
+        </item>
+        <item id="installfile"><![CDATA[install.php]]></item>
+        <item id="uninstallfile"><![CDATA[uninstall.php]]></item>
+        <item id="upgradefile"><![CDATA[upgrade.php]]></item>
+        <item id="enablefile"><![CDATA[enable.php]]></item>
+        <item id="disablefile"><![CDATA[disable.php]]></item>
+    </item>
+</root>
