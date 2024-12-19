@@ -1,0 +1,423 @@
+<style>
+    .blockcode {
+        padding: 10px 0 5px 10px;
+        border: 1px solid #CCC;
+        background: #F7F7F7 repeat-y 0 0;
+        background-image: linear-gradient(90deg, #EDEDED, #EDEDED);
+        background-size: 43px;
+        overflow: hidden;
+    }
+
+    .blockcode div {
+        padding-left: 20px;
+    }
+
+    .blockcode ol {
+        margin: 0 0 0 10px !important;
+        padding: 0 !important;
+    }
+
+    .blockcode ol li {
+        padding-left: 10px;
+        list-style-type: decimal-leading-zero;
+        font-family: Monaco, Consolas, 'Lucida Console', 'Courier New', serif;
+        font-size: 12px;
+        line-height: 1.8em;
+    }
+
+    .blockcode ol li:hover {
+        background: #FFF;
+        color: #369;
+    }
+
+    .blockcode em {
+        margin-left: 43px;
+        color: #369 !important;
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .audit-container {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    .filter-section label {
+        margin-right: 5px;
+    }
+
+    .filter-section select,
+    .filter-section input,
+    .filter-section button {
+        margin-right: 5px;
+        padding: 5px 5px;
+    }
+
+    .action-buttons {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons button {
+        padding: 5px 20px;
+        margin-right: 5px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .action-buttons button:hover {
+        background-color: #0056b3;
+    }
+
+    .audit-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .audit-table th,
+    .audit-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .audit-table th {
+        background-color: #f2f2f2;
+    }
+
+    .audit-table .content-title {
+        display: block;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+
+
+    .audit-table .category-btn {
+        padding: 5px 10px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+
+    .pagination a {
+        text-decoration: none;
+        color: #007bff;
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .pagination a:hover {
+        background-color: #f2f2f2;
+    }
+
+    .pagination a.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    .pagination a.prev-page,
+    .pagination a.next-page {
+        font-weight: bold;
+    }
+
+    #page-total {
+        margin-right: 5px;
+    }
+
+    .audit-table .content-table {
+        position: relative;
+    }
+
+    .audit-table .content-table .text-full {
+        position: absolute;
+        top: 20px;
+        left: 100%;
+        width: 100%;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        white-space: normal;
+        max-height: 200px;
+        overflow-y: scroll;
+        display: none;
+        color: black;
+    }
+
+    #dateStart {
+        margin-right: 2px;
+    }
+
+    .text-input {
+        width: 80px;
+    }
+</style>
+
+<div class="audit-container">
+    <form id="search-form" action="{$commonUrl}" method="POST" enctype="multipart/form-data">
+        <div class="filter-section">
+            <label for="dateStart">内容发布时间</label>
+            <input name="dateStart" type="datetime-local" value="{$dateStart}" id="dateStart">
+            <label for="dateEnd"></label>
+            <input name="dateEnd" type="datetime-local" value="{$dateEnd}" id="dateEnd">
+            <label for="auditType">类型</label>
+            <select id="auditType" name="auditType">
+                <!--{loop $allAuditType $name $t}-->
+                <option value="{$t}" <!--{if $t==$type}--> selected <!--{/if}-->>
+                    {$name}
+                </option>
+                <!--{/loop}-->
+            </select>
+            <label for="status">审核状态</label>
+            <select id="status" name="status">
+                <!--{loop $allAuditStatus $name $s}-->
+                <option value="{$s}" <!--{if $s==$status}--> selected <!--{/if}-->>
+                    {$name}</option>
+                <!--{/loop}-->
+            </select>
+            <label for="username">发布用户</label>
+            <input name="username" type="text" id="username" value="{$username}" class="text-input" placeholder="输入内容">
+            <label for="content">内容包含</label>
+            <input name="content" type="text" id="content" value="{$content}" class="text-input" placeholder="输入内容">
+
+            <button class="search-btn" id="search-submit" type="submit">搜索</button>
+            <input type="text" name="page" id="pageInput" style="display: none;">
+        </div>
+    </form>
+    <div class="action-buttons">
+        <!-- {if $status ==  $knownsecOption::STATUS_TODO } -->
+        <button class="batch-pass" id="batch-pass">批量通过</button>
+        <button class="batch-delete" id="batch-delete">批量删除</button>
+        <!-- {/if} -->
+    </div>
+
+    <table class="audit-table">
+        <thead>
+            <tr>
+                <th>是否免审</th>
+                <th>审核状态</th>
+                <th>检测内容</th>
+                <th>类型</th>
+                <th>发布人/时间</th>
+                <th>分类</th>
+                <th>审核人/时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- {loop $contents $content} -->
+            <tr>
+                <td>
+                    <!-- {if intval($content['status']) === $knownsecOption::STATUS_NO_NEED } -->
+                    是
+                    <!-- {else} -->
+                    否
+                    <!-- {/if} -->
+                </td>
+                <td>
+                    <!-- {loop  $allAuditStatus $name $s} -->
+                    <!-- {if intval($content['status']) === $s } -->
+                    {$name}
+                    <!-- {/if} -->
+                    <!-- {/loop} -->
+
+                </td>
+                <td style="max-width: 200px;;word-break:break-all;" class="content-table">
+                    <a href="#" class="content-title">{$content['examine_subject']}</a>
+
+                    <p class=" content-text">{$content['examine_text']}
+                        <!-- {if $content['examine_text_length'] > 500} -->
+                        ...
+                        <!-- {/if} -->
+                    </p>
+                    <div class="text-full">{$content['examine_text_full']}</div>
+                </td>
+                <td>
+                    {$content['type']}
+                </td>
+                <td>{$content['username']}<br>{$content['release_date']}</td>
+                <td><button class="category-btn">{$content['evil_label']}</button></td>
+                <td>{$content['audit_username']}<br>{$content['audit_date']}</td>
+            </tr>
+            <!-- {/loop} -->
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span id="page-total">共{$totalPages}页</span>
+        <!-- 上一页 -->
+        <!-- {if $currentPage > 1} -->
+        <!-- {eval $prevPage=$currentPage-1    } -->
+        <a href="#" page="{$prevPage}" class="prev-page page-btn">上一页</a>
+        <!-- {else} -->
+        <span class="prev-page disabled">上一页</span>
+        <!-- {/if} -->
+
+        <!-- 页码列表 -->
+        <!-- {loop $pageNumbers $page} -->
+        <!-- {if $page == $currentPage} -->
+        <a href="#" page="{$page}" class="page-number active page-btn">{$page}</a>
+        <!-- {else} -->
+        <a href="#" page="{$page}" class="page-number page-btn">{$page}</a>
+        <!-- {/if} -->
+
+        <!-- {/loop} -->
+
+        <!-- 下一页 -->
+        <!-- {if $currentPage < $totalPages} -->
+        <!-- {eval $nextPage=$currentPage+1} -->
+        <a href="#" page="{$nextPage}" class="next-page page-btn">下一页</a>
+        <!-- {else} -->
+        <span class="next-page disabled">下一页</span>
+        <!-- {/if} -->
+
+        <!-- 页码输入框 -->
+        <span class="page-input">
+            跳转到
+            <input type="number" min="1" max="{$totalPages}" value="{$currentPage}" id="pageSearchInput" />
+            页
+            <button id="pageSearchBtn" class="page-number"">跳转</button>
+        </span>
+
+    </div>
+</div>
+
+
+<script src=" source/plugin/content_moderation/js/jquery.min.js"></script>
+
+
+                <script type="text/javascript">
+
+
+                    const ACTION_PASS = 'pass';
+                    const ACTION_DELETE = 'delete';
+                    jQuery.noConflict();
+                    jQuery(function ($) {
+                        function batchHandle(action, ids) {
+
+
+                            if (ids.length === 0) {
+                                alert('请选择审核通过/删除的内容');
+                                return;
+                            }
+
+                            $.ajax({
+                                type: "post",
+                                url: 'plugin.php?id=content_moderation:audit_post',
+                                dataType: "json",
+                                data: {
+                                    ids: ids,
+                                    action: action,
+                                },
+                                success: function (response) {
+                                    if (response.code !== 200) {
+                                        showDialog(response.msg, 'error', 'error Tips');
+                                        return false;
+                                    }
+                                    location.reload();
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                    showDialog('{lang content_moderation:unknown_error}', 'error', 'error Tips');
+                                    return false;
+                                }
+                            });
+                        }
+
+                        // 页码按钮
+                        $(".page-btn").click(function (e) {
+                            e.preventDefault();
+                            const page = e.target.attributes.page.value;
+                            $('#pageInput').val(page);
+                            $('#search-form').submit();
+                        });
+
+                        // 跳转按钮
+                        $("#pageSearchBtn").click(function (e) {
+                            e.preventDefault();
+                            $('#pageInput').val(page);
+                            $('#search-form').submit();
+                        });
+
+
+                        // 批量选中
+                        $('#select-all').change(function (item) {
+                            item.preventDefault();
+                            checked = $('#select-all').prop('checked');
+                            $('.select-item').prop('checked', checked);
+                            $('#select-all').prop('checked', checked);
+
+                        });
+
+
+                        $('.select-item').change(function (e) {
+                            e.preventDefault();
+                            // 如果所有 .select-item 都被选中，勾选 #select-all
+                            $('#select-all').prop('checked', $('.select-item:checked').length === $('.select-item').length);
+                        });
+
+
+                        // 批量通过、批量删除
+                        $('#batch-pass').click(function (e) {
+                            e.preventDefault();
+                            const ids = [];
+                            $('.select-item:checked').each(function () {
+                                ids.push($(this).val());
+                            });
+                            batchHandle(ACTION_PASS, ids);
+                        })
+
+                        $('#batch-delete').click(function (e) {
+                            e.preventDefault();
+                            const ids = [];
+                            $('.select-item:checked').each(function () {
+                                ids.push($(this).val());
+                            });
+                            batchHandle(ACTION_DELETE, ids);
+                        })
+
+                        // 单一审核通过、单一删除
+                        $('.single-action-pass').click(function (e) {
+                            batchHandle(ACTION_PASS, [$(this).attr('value')]);
+                        })
+                        $('.single-action-delete').click(function (e) {
+                            batchHandle(ACTION_DELETE, [$(this).attr('value')]);
+                        })
+
+
+                        // hover full
+                        $(".content-table").hover(
+                            function () {
+                                $(this).find(".text-full").stop(true, true).fadeIn();
+                            },
+                            function () {
+                                $(this).find(".text-full").stop(true, true).fadeOut();
+                            }
+                        );
+
+
+                    });
+                </script>

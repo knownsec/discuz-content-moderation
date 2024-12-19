@@ -1,0 +1,185 @@
+<!--{block ajax_examine_js}-->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<script type="text/javascript" src="source/plugin/content_moderation/js/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/bbcode.js"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+
+
+    jQuery(function ($) {
+        // 关闭弹窗
+        function closeDialog(buttonId, callback) {
+            const button = document.getElementById(buttonId); // 获取按钮
+            // 定义事件处理函数
+            const handleClick = function () {
+                button.removeEventListener('click', handleClick); // 移除事件监听
+
+                // 如果提供了回调函数，则执行它
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            };
+
+            button.addEventListener('click', handleClick);
+            setTimeout(() => {
+                if (button) {
+                    button.click(); // 模拟点击按钮
+                }
+            }, 3000);
+        }
+        // 发新帖
+        function postNew(e) {
+            e.preventDefault();
+            var subject = $("#subject").val();
+            var message = $('#e_iframe').contents().find('body').html();
+
+            var encodedMessage = html2bbcode(message);
+            $.ajax({
+                type: "post",
+                url: 'plugin.php?id=content_moderation:ajax_examine_post',
+                dataType: "json",
+                data: {
+                    subject: subject,
+                    message: encodedMessage,
+                    fid: "{$fid}",
+                    formhash: "{$formhash}",
+                    pType: 1, // 1发帖 2回帖
+                },
+                success: function (response) {
+                    if (response.code != 200) {
+                        showDialog(response.msg, 'error', '提示');
+                        if (response.handleMethod == 1) {
+                            closeDialog('fwin_dialog_submit', function () {
+                                $("#subject").val('');
+                                $('#e_iframe').contents().find('body').html('');
+                            });
+                        }
+                        return false;
+                    }
+                    // 替换标题
+                    if (response.examine_subject) {
+                        $("#subject").val(response.examine_subject);
+                    }
+                    // 替换正文中的关键词
+                    if (response.keywords && response.keywords.length > 0) {
+                        var messageHtml = $('#e_iframe').contents().find('body').html();
+                        response.keywords.forEach(function (keyword) {
+                            var replacement = '*'.repeat(keyword.length); // 替换为相应长度的*
+                            // 全局替换关键词
+                            var regex = new RegExp(keyword, 'g'); // 使用正则进行全局替换
+                            messageHtml = messageHtml.replace(regex, replacement);
+                        });
+                        // 将替换后的内容写回富文本框
+                        $('#e_iframe').contents().find('body').html(messageHtml);
+                    }
+                    if (response.examine_subject) {
+                        $("#subject").val(response.examine_subject);
+                    }
+                    // 提交表单
+                    $('#postform').submit();
+                },
+                error: function (error) {
+                    showDialog('{lang content_moderation:system_error}', 'error', '提示');
+                    return false;
+                }
+            });
+        }
+
+        $("#postsubmit").click(function (e) {
+            // 发新帖
+            postNew(e);
+        })
+
+        $("#fastpostsubmit").click(function (e) {
+            e.preventDefault();
+            var subject = ''; // 主题
+            var message = ''; // 内容
+
+            // 获取当前目标元素的 name 属性
+            var attrName = e.currentTarget.getAttribute("name");
+            switch (attrName) {
+                case 'topicsubmit':
+                    subject = $("#subject").val();
+                    message = $('#fastpostmessage').val();
+                    $.ajax({
+                        type: "post",
+                        url: 'plugin.php?id=content_moderation:ajax_examine_post',
+                        dataType: "json",
+                        data: {
+                            subject: subject,
+                            message: message,
+                            fid: "{$fid}",
+                            tid: "{$tid}",
+                            formhash: "{$formhash}",
+                            pType: 1, // 1发帖 2回帖
+                        },
+                        success: function (response) {
+                            if (response.code != 200) {
+                                showDialog(response.msg, 'error', '提示');
+                                if (response.handleMethod == 1) {
+                                    closeDialog('fwin_dialog_submit', function () {
+                                        $("#subject").val('');
+                                        $('#fastpostmessage').val('');
+                                    });
+                                }
+                                return false;
+                            }
+                            if (response.examine_subject) {
+                                $("#subject").val(response.examine_subject);
+                            }
+                            if (response.examine_text) {
+                                $("#fastpostmessage").val(response.examine_text);
+                            }
+                            $('#fastpostsubmit').submit();
+                        },
+                        error: function (error) {
+                            showDialog('{lang content_moderation:system_error}', 'error', '提示');
+                            return false;
+                        }
+                    });
+                    break;
+                case 'replysubmit':
+                    message = $("#fastpostmessage").val();
+                    $.ajax({
+                        type: "post",
+                        url: 'plugin.php?id=content_moderation:ajax_examine_post',
+                        dataType: "json",
+                        data: {
+                            subject: subject,
+                            message: message,
+                            fid: "{$fid}",
+                            tid: "{$tid}",
+                            formhash: "{$formhash}",
+                            pType: 2, // 1发帖 2回帖
+                        },
+                        success: function (response) {
+                            if (response.code != 200) {
+                                showDialog(response.msg, 'error', '提示');
+                                if (response.handleMethod == 1) {
+                                    closeDialog('fwin_dialog_submit', function () {
+                                        $('#fastpostmessage').val('');
+                                    });
+                                }
+                                return false;
+                            }
+                            if (response.examine_text) {
+                                $("#fastpostmessage").val(response.examine_text);
+                            }
+                            $('#fastpostsubmit').submit();
+                        },
+                        error: function (error) {
+                            showDialog('{lang content_moderation:system_error}', 'error', '提示');
+                            return false;
+                        },
+                    });
+                    break;
+                default:
+                    console.log("未知的情况");
+                    break;
+            }
+        });
+    });
+</script>
+<!--{/block}-->

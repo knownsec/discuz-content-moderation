@@ -1,0 +1,131 @@
+<style type="text/css">
+    input[disabled] {
+        background-color: gainsboro;
+    }
+</style>
+<form method="post">
+    <table class="tb tb2">
+        <tbody>
+            <tr>
+                <th colspan="15" class="partition">{lang content_moderation:setting}</th>
+            </tr>
+            <tr>
+                <td colspan="2" class="td27"><label for="app-id">appId:</label></td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform">
+                    <input id="app-id" name="appId" size="42" type="text" class="text" value="{$appId}">
+                </td>
+                <td class="vtop tips2"><a href="http://docsify.qixincha.com/#/"
+                        target="_blank">http://docsify.qixincha.com免费获取</a></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="td27"><label for="secret-key">SecretKey:</label></td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform">
+                    <input name="secretKey" size="42" id="secret-key" type="text" class="text" value="{$secretKey}">
+                </td>
+                <td class="vtop tips2"><a href="http://docsify.qixincha.com/#/"
+                        target="_blank">http://docsify.qixincha.com免费获取</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="td27"><label for="text-business-id">文本业务ID:</label></td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform">
+                    <input name="textBussinessId" size="42" id="text-business-id" type="text" class="text"
+                        value="{$textBussinessId}">
+                </td>
+                <td class="vtop tips2"><a href="http://docsify.qixincha.com/#/"
+                        target="_blank">http://docsify.qixincha.com免费获取</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="td27">{lang content_moderation:audit_type}</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform">
+                    <ul>
+                        <li <!--{if in_array(1, $auditType)}-->class="checked"<!--{/if}-->>
+                            <input <!--{if in_array(1, $auditType)}-->checked="checked"<!--{/if}-->
+                            id="examine-post"
+                            class="checkbox"
+                            type="checkbox"
+                            name="auditType[]"
+                            value="1">
+                            <label for="examine-post">{lang content_moderation:audit_type_post}</label>
+                        </li>
+                        <li <!--{if in_array(2, $auditType)}-->class="checked"<!--{/if}-->>
+                            <input <!--{if in_array(2, $auditType)}-->checked="checked"<!--{/if}-->
+                            id="examine-reply"
+                            class="checkbox"
+                            type="checkbox"
+                            name="auditType[]"
+                            value="2">
+                            <label for="examine-reply">{lang content_moderation:audit_type_reply}</label>
+                        </li>
+                    </ul>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="td27">{lang content_moderation:intercept_type}</td>
+            </tr>
+
+            <tr class="noborder">
+                <td class="vtop rowform">
+                    <ul>
+                        <!--{loop $allInterceptTypeList $index $type}-->
+                        <li <!--{if in_array($type, $interceptType)}-->class="checked"<!--{/if}-->>
+                            <input <!--{if in_array($type, $interceptType)}-->checked="checked"<!--{/if}-->
+                            id="intercept-type-{$index}"
+                            class="checkbox"
+                            type="checkbox"
+                            name="interceptType[]"
+                            value="{$type}">
+                            <label for="intercept-type-{$index}">{$type}</label>
+                        </li>
+                        <!--{/loop}-->
+                    </ul>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="td27">{lang content_moderation:handle_method}</td>
+            </tr>
+            <tr class="noborder">
+                <td class="vtop rowform">
+                    <ul>
+                        <!--{loop $allHandleMethod $name $value}-->
+                        <li <!--{if $value===$handleMethod }-->class="checked"<!--{/if}-->>
+                            <input <!--{if $value===$handleMethod}-->checked="checked"<!--{/if}-->
+                            id="handle-method-{$value}"
+                            class="radio"
+                            type="radio"
+                            name="handleMethod"
+                            value="{$value}">
+                            <label for="handle-method-{$index}">{$name}</label>
+                        </li>
+                        <!--{/loop}-->
+                    </ul>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td colspan="15">
+                    <div class="fixsel">
+                        <input type="submit" class="btn" id="txc-submit-btn" value="{lang content_moderation:save}" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
